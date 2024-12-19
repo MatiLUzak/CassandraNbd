@@ -1,0 +1,43 @@
+version: "3.8"
+services:
+  cassandra1:
+    image: docker.io/bitnami/cassandra:latest
+    container_name: cassandra1
+    hostname: cassandra1
+    environment:
+      - CASSANDRA_CLUSTER_NAME=nbd-cassandra-cluster
+      - CASSANDRA_DATACENTER=dc1
+      - CASSANDRA_RACK=rack1
+      - CASSANDRA_LISTEN_ADDRESS=cassandra1
+      - CASSANDRA_BROADCAST_ADDRESS=cassandra1
+      - CASSANDRA_SEEDS=cassandra1,cassandra2
+      - CASSANDRA_ENDPOINT_SNITCH=GossipingPropertyFileSnitch
+      - CASSANDRA_USER=cassandra
+      - CASSANDRA_PASSWORD=cassandrapassword
+    ports:
+      - "9042:9042"
+    networks:
+      cassandranet:
+
+  cassandra2:
+    image: docker.io/bitnami/cassandra:latest
+    container_name: cassandra2
+    hostname: cassandra2
+    environment:
+      - CASSANDRA_CLUSTER_NAME=nbd-cassandra-cluster
+      - CASSANDRA_DATACENTER=dc1
+      - CASSANDRA_RACK=rack1
+      - CASSANDRA_LISTEN_ADDRESS=cassandra2
+      - CASSANDRA_BROADCAST_ADDRESS=cassandra2
+      - CASSANDRA_SEEDS=cassandra1,cassandra2
+      - CASSANDRA_ENDPOINT_SNITCH=GossipingPropertyFileSnitch
+      - CASSANDRA_USER=cassandra
+      - CASSANDRA_PASSWORD=cassandrapassword
+    ports:
+      - "9043:9042"
+    networks:
+      cassandranet:
+
+networks:
+  cassandranet:
+    driver: bridge
