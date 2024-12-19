@@ -12,8 +12,8 @@ public class CassandraSessionFactory {
         if (session == null) {
             session = CqlSession.builder()
                     .addContactPoint(new InetSocketAddress("localhost", 9042))
-                    .withLocalDatacenter("dc1")  // musi pasować do DC podanego w docker-compose
-                    .withAuthCredentials("cassandra", "cassandra")
+                    .withLocalDatacenter("dc1")
+                    .withAuthCredentials("cassandra", "cassandrapassword")
                     .build();
         }
     }
