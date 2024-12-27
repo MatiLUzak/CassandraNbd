@@ -55,6 +55,11 @@
             <artifactId>slf4j-simple</artifactId>
             <version>1.6.1</version>
         </dependency>
+        <dependency>
+            <groupId>com.datastax.oss</groupId>
+            <artifactId>java-driver-mapper-runtime</artifactId>
+            <version>4.16.0</version>
+        </dependency>
 
 
     </dependencies>
@@ -68,6 +73,21 @@
                     <includes>
                         <include>**/*Test.java</include>
                     </includes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <annotationProcessors>
+                        <annotationProcessor>com.datastax.oss.driver.api.mapper.processor.MapperProcessor</annotationProcessor>
+                    </annotationProcessors>
+                    <compilerArgs>
+                        <arg>-parameters</arg>
+                    </compilerArgs>
+                    <source>23</source>
+                    <target>23</target>
                 </configuration>
             </plugin>
         </plugins>
