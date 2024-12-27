@@ -1,13 +1,18 @@
 package org.example.model;
 
+import com.datastax.oss.driver.api.mapper.annotations.CqlName;
+import com.datastax.oss.driver.api.mapper.annotations.Entity;
+import com.datastax.oss.driver.api.mapper.annotations.PartitionKey;
 import org.example.exceptions.WoluminException;
 
 import java.util.UUID;
-
+@Entity
+@CqlName("wolumin") // nazwa tabeli w Cassandrze
 public class Wolumin {
     private String wydawnictwo;
     private String jezyk;
     private String tytul;
+    @PartitionKey
     private UUID woluminId;
 
     public Wolumin(String wydawnictwo, String jezyk, String tytul) {

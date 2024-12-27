@@ -1,9 +1,12 @@
 package org.example.model;
 
+import com.datastax.oss.driver.api.mapper.annotations.CqlName;
+import com.datastax.oss.driver.api.mapper.annotations.Entity;
 import org.example.exceptions.WoluminException;
 
 import java.util.List;
-
+@Entity
+@CqlName("ksiazka")
 public class Ksiazka extends Wolumin{
 
     private List<String> autor;

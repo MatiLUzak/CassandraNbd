@@ -1,12 +1,17 @@
 package org.example.model;
 
+import com.datastax.oss.driver.api.mapper.annotations.CqlName;
+import com.datastax.oss.driver.api.mapper.annotations.Entity;
+import com.datastax.oss.driver.api.mapper.annotations.PartitionKey;
 import org.example.exceptions.WypozyczajacyException;
 
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.UUID;
-
+@Entity
+@CqlName("wypozyczajacy")
 public class Wypozyczajacy {
+    @PartitionKey
     private UUID wypozyczajacyId;
     private TypWypozyczajacy typWypozyczajacy;
     private String nazwa;

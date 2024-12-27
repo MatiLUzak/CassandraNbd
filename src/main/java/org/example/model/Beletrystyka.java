@@ -1,9 +1,12 @@
 package org.example.model;
 
+import com.datastax.oss.driver.api.mapper.annotations.CqlName;
+import com.datastax.oss.driver.api.mapper.annotations.Entity;
 import org.example.exceptions.WoluminException;
 
 import java.util.List;
-
+@Entity
+@CqlName("beletrystyka")
 public class Beletrystyka extends Ksiazka{
     private String przedziałWiekowy;
     private String rodzaj;
