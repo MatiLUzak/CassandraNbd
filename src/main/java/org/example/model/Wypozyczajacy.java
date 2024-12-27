@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.UUID;
 
 public class Wypozyczajacy {
+    private UUID wypozyczajacyId;
     private TypWypozyczajacy typWypozyczajacy;
     private String nazwa;
     private Date dataUr;
@@ -28,9 +29,18 @@ public class Wypozyczajacy {
         this.nazwa = nazwa;
         this.dataUr = dataUr;
         this.adres = adres;
-        //this.uuid = UUID.randomUUID();
+        this.wypozyczajacyId = UUID.randomUUID();
     }
-    public Wypozyczajacy() {}
+    public Wypozyczajacy() {
+        this.wypozyczajacyId = UUID.randomUUID();
+    }
+    public UUID getWypozyczajacyId() {
+        return wypozyczajacyId;
+    }
+
+    public void setWypozyczajacyId(UUID id) {
+        this.wypozyczajacyId = id;
+    }
 
     /*public UUID getUuid() {
         return uuid;

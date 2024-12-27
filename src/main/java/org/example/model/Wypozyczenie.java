@@ -9,6 +9,8 @@ import java.util.UUID;
 
 public class Wypozyczenie {
 
+    private UUID wypozyczenieId;
+
     private Wypozyczajacy wypozyczajacy;
 
     private Wolumin wolumin;
@@ -27,12 +29,21 @@ public class Wypozyczenie {
         if (wolumin == null) {
             throw new WypozyczenieException("Błędny wolumin");
         }
+        this.wypozyczenieId = UUID.randomUUID();
         this.wypozyczajacy = wypozyczajacy;
         this.wolumin = wolumin;
         this.dataOd = new Date();  // Ustawienie daty początkowej na teraz
         //this.uuid = UUID.randomUUID();  // Generowanie UUID
     }
     public Wypozyczenie() {}
+
+    public UUID getWypozyczenieId() {
+        return wypozyczenieId;
+    }
+
+    public void setWypozyczenieId(UUID id) {
+        this.wypozyczenieId = id;
+    }
 
     // Gettery
     public Wypozyczajacy getWypozyczajacy() {

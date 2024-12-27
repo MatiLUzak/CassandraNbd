@@ -2,7 +2,10 @@ package org.example.model;
 
 import org.example.exceptions.WypozyczajacyException;
 
+import java.util.UUID;
+
 public class TypWypozyczajacy {
+    private UUID typId;
     private double kara;
     private int maxDlWypoz;
     private int maksLKsiazek;
@@ -20,8 +23,18 @@ public class TypWypozyczajacy {
         this.kara = kara;
         this.maxDlWypoz = maxDlWypoz;
         this.maksLKsiazek = maksLKsiazek;
+        this.typId = UUID.randomUUID();
     }
     public TypWypozyczajacy() {}
+
+    public UUID getTypId() {
+        return typId;
+    }
+
+    public void setTypId(UUID typId) {
+        this.typId = typId;
+    }
+
 
     public double getKara() {
         return kara;
