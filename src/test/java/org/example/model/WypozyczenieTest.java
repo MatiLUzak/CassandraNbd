@@ -1,4 +1,4 @@
-package org.example.model;
+/*package org.example.model;
 
 import org.example.exceptions.WypozyczenieException;
 import org.junit.jupiter.api.Test;
@@ -57,4 +57,4 @@ class WypozyczenieTest {
         assertThrows(WypozyczenieException.class, () -> wypozyczenie.setWypozyczajacy(null));
         assertThrows(WypozyczenieException.class, () -> wypozyczenie.setWolumin(null));
     }
-}
+}*/

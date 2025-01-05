@@ -13,6 +13,7 @@ public class CassandraSessionFactory {
             session = CqlSession.builder()
                     .addContactPoint(new InetSocketAddress("localhost", 9042))
                     .withLocalDatacenter("dc1")
+                    .withKeyspace("CassandraBaseTask")
                     .withAuthCredentials("cassandra", "cassandrapassword")
                     .build();
         }

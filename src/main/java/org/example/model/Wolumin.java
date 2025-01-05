@@ -7,31 +7,40 @@ import org.example.exceptions.WoluminException;
 
 import java.util.UUID;
 @Entity
-@CqlName("wolumin") // nazwa tabeli w Cassandrze
+@CqlName("wolumin")
 public class Wolumin {
-    private String wydawnictwo;
-    private String jezyk;
-    private String tytul;
-    @PartitionKey
-    private UUID woluminId;
 
+    @PartitionKey
+    protected UUID woluminId;
+
+    protected String wydawnictwo;
+    protected String jezyk;
+    protected String tytul;
+
+    // ====== PUSTY KONSTRUKTOR, WYMAGANY DLA MAPPER ======
+    public Wolumin() {
+        // DataStax wypełni setWoluminId(...) itp. przez settery
+    }
+
+    // ====== KONSTRUKTOR Z ARGUMENTAMI (opcjonalnie, do Twojego kodu) ======
     public Wolumin(String wydawnictwo, String jezyk, String tytul) {
-        if(wydawnictwo==null||wydawnictwo.isEmpty()){
+        // Walidacje:
+        if (wydawnictwo == null || wydawnictwo.isEmpty()) {
             throw new WoluminException("Błędne Wydawnictwo");
         }
-        if(jezyk==null||jezyk.isEmpty()){
+        if (jezyk == null || jezyk.isEmpty()) {
             throw new WoluminException("Błędny język");
         }
-        if(tytul==null||tytul.isEmpty()){
+        if (tytul == null || tytul.isEmpty()) {
             throw new WoluminException("Błędny tytuł");
         }
+        this.woluminId = UUID.randomUUID();
         this.wydawnictwo = wydawnictwo;
         this.jezyk = jezyk;
         this.tytul = tytul;
-        this.woluminId = UUID.randomUUID();
     }
-    public Wolumin() {}
 
+    @CqlName("wolumin_id")
     public UUID getWoluminId() {
         return woluminId;
     }
@@ -44,32 +53,24 @@ public class Wolumin {
         return wydawnictwo;
     }
 
+    public void setWydawnictwo(String wydawnictwo) {
+        this.wydawnictwo = wydawnictwo;
+    }
+
     public String getJezyk() {
         return jezyk;
+    }
+
+    public void setJezyk(String jezyk) {
+        this.jezyk = jezyk;
     }
 
     public String getTytul() {
         return tytul;
     }
 
-    public void setWydawnictwo(String wydawnictwo) {
-        if(wydawnictwo==null||wydawnictwo.isEmpty()){
-            throw new WoluminException("Błędne Wydawnictwo");
-        }
-        this.wydawnictwo = wydawnictwo;
-    }
-
-    public void setJezyk(String jezyk) {
-        if(jezyk==null||jezyk.isEmpty()){
-            throw new WoluminException("Błędny jezyk");
-        }
-        this.jezyk = jezyk;
-    }
-
     public void setTytul(String tytul) {
-        if(tytul==null||tytul.isEmpty()){
-            throw new WoluminException("Błdny tytul");
-        }
         this.tytul = tytul;
     }
 }
+

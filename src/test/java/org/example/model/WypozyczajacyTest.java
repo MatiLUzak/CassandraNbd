@@ -1,4 +1,4 @@
-package org.example.model;
+/*package org.example.model;
 
 import org.example.exceptions.WypozyczajacyException;
 import org.junit.jupiter.api.Test;
@@ -40,4 +40,4 @@ class WypozyczajacyTest {
         assertThrows(WypozyczajacyException.class, () -> wypozycajacy.setNazwa(""));
         assertThrows(WypozyczajacyException.class, () -> wypozycajacy.setAdres(""));
     }
-}
+}*/

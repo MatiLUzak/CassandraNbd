@@ -48,7 +48,7 @@
         <dependency>
             <groupId>com.datastax.oss</groupId>
             <artifactId>java-driver-core</artifactId>
-            <version>4.16.0</version>
+            <version>4.17.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -59,7 +59,7 @@
         <dependency>
             <groupId>com.datastax.oss</groupId>
             <artifactId>java-driver-mapper-runtime</artifactId>
-            <version>4.16.0</version>
+            <version>4.17.0</version>
         </dependency>
 
 
@@ -91,7 +91,7 @@
                         <path>
                             <groupId>com.datastax.oss</groupId>
                             <artifactId>java-driver-mapper-processor</artifactId>
-                            <version>4.16.0</version>
+                            <version>4.17.0</version>
                         </path>
                     </annotationProcessorPaths>
                 </configuration>

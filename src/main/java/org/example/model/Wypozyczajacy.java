@@ -5,103 +5,61 @@ import com.datastax.oss.driver.api.mapper.annotations.Entity;
 import com.datastax.oss.driver.api.mapper.annotations.PartitionKey;
 import org.example.exceptions.WypozyczajacyException;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.UUID;
 @Entity
 @CqlName("wypozyczajacy")
 public class Wypozyczajacy {
+
     @PartitionKey
     private UUID wypozyczajacyId;
-    private TypWypozyczajacy typWypozyczajacy;
+
+    // Zamiast obiektu:
+    private UUID typId;
+
     private String nazwa;
-    private Date dataUr;
+    private Instant dataUr;
     private String adres;
-    //private UUID uuid;
 
-    public Wypozyczajacy(TypWypozyczajacy typWypozyczajacy, String nazwa, Date dataUr, String adres) {
-        if (typWypozyczajacy == null) {
-            throw new WypozyczajacyException("Błędny typWypozyczajacy");
-        }
-        if (nazwa == null || nazwa.isEmpty()) {
-            throw new WypozyczajacyException("Błędna nazwa");
-        }
-        if (adres == null || adres.isEmpty()) {
-            throw new WypozyczajacyException("Błędny adres");
-        }
-
-        this.typWypozyczajacy = typWypozyczajacy;
-        this.nazwa = nazwa;
-        this.dataUr = dataUr;
-        this.adres = adres;
-        this.wypozyczajacyId = UUID.randomUUID();
-    }
     public Wypozyczajacy() {
         this.wypozyczajacyId = UUID.randomUUID();
     }
-    public UUID getWypozyczajacyId() {
-        return wypozyczajacyId;
-    }
 
-    public void setWypozyczajacyId(UUID id) {
-        this.wypozyczajacyId = id;
-    }
-
-    /*public UUID getUuid() {
-        return uuid;
-    }
-     */
-
-
-    public TypWypozyczajacy getTypWypozyczajacy() {
-        return typWypozyczajacy;
-    }
-
-    public String getNazwa() {
-        return nazwa;
-    }
-
-    public Date getDataUr() {
-        return dataUr;
-    }
-
-    public String getAdres() {
-        return adres;
-    }
-
-    public void setTypWypozyczajacy(TypWypozyczajacy typWypozyczajacy) {
-        if (typWypozyczajacy == null) {
+    public Wypozyczajacy(UUID typId, String nazwa, Instant dataUr, String adres) {
+        this.wypozyczajacyId = UUID.randomUUID();
+        /*if (typId == null) {
             throw new WypozyczajacyException("Błędny typWypozyczajacy");
-        }
-        this.typWypozyczajacy = typWypozyczajacy;
-    }
-
-    public void setNazwa(String nazwa) {
-        if (nazwa == null || nazwa.isEmpty()) {
-            throw new WypozyczajacyException("Błędna nazwa");
-        }
+        }*/
+        this.typId = typId;
+        // walidacja nazwy, adresu...
         this.nazwa = nazwa;
-    }
-
-    public void setDataUr(Date dataUr) {
         this.dataUr = dataUr;
-    }
-
-    public void setAdres(String adres) {
-        if (adres == null || adres.isEmpty()) {
-            throw new WypozyczajacyException("Błędny adres");
-        }
         this.adres = adres;
     }
 
+    public UUID getWypozyczajacyId() {
+        return wypozyczajacyId;
+    }
+    public void setWypozyczajacyId(UUID wId) { this.wypozyczajacyId = wId; }
+
+    public UUID getTypId() {
+        return typId;
+    }
+    public void setTypId(UUID t) { this.typId = t; }
+
+    public String getNazwa() { return nazwa; }
+    public void setNazwa(String n) { this.nazwa = n; }
+
+    public Instant getDataUr() { return dataUr; }
+    public void setDataUr(Instant d) { this.dataUr = d; }
+
+    public String getAdres() { return adres; }
+    public void setAdres(String a) { this.adres = a; }
+
     public String pobierzInformacjeWypozyczajacego() {
-        StringBuilder info = new StringBuilder();
-        info.append("Nazwa: ").append(getNazwa()).append("\n");
-        info.append("Data urodzenia: ").append(getDataUr()).append("\n");
-        info.append("Adres: ").append(getAdres()).append("\n");
-        if (typWypozyczajacy != null) {
-            info.append("Typ wypożyczającego: ").append(typWypozyczajacy.pobierzInfo()).append("\n");
-        }
-        return info.toString();
+        return "Nazwa=" + nazwa + ", dataUr=" + dataUr + ", adres=" + adres;
     }
 }
+

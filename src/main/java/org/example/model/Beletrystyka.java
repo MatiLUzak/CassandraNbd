@@ -5,67 +5,55 @@ import com.datastax.oss.driver.api.mapper.annotations.Entity;
 import org.example.exceptions.WoluminException;
 
 import java.util.List;
+import java.util.UUID;
+
 @Entity
 @CqlName("beletrystyka")
-public class Beletrystyka extends Ksiazka{
+public class Beletrystyka extends Ksiazka {
+
     private String przedziałWiekowy;
     private String rodzaj;
 
-    public Beletrystyka() {}
-
-    public Beletrystyka(String wydawnictwo, String jezyk, String tytul, List<String> autor, String przedział_wiekowy, String rodzaj) {
-        super(wydawnictwo, jezyk, tytul, autor);
-        if(przedział_wiekowy==null||przedział_wiekowy.isEmpty())
-        {
-            throw new WoluminException("Przedzial wiekowy nie moze byc pusty");
-        }
-        if(rodzaj==null||rodzaj.isEmpty())
-        {
-            throw new WoluminException("Rodzaj nie moze byc pusty");
-        }
-        this.przedziałWiekowy = przedział_wiekowy;
-
-        this.rodzaj = rodzaj;
+    public Beletrystyka() {
+        super();
     }
 
-    public String getPrzedział_wiekowy() {
+    public Beletrystyka(String wyd, String jez, String tit, List<String> aut, String wiek, String rodz) {
+        super(wyd, jez, tit, aut);
+        if (wiek == null || wiek.isEmpty()) {
+            throw new WoluminException("Przedział wiekowy nie może być pusty");
+        }
+        if (rodz == null || rodz.isEmpty()) {
+            throw new WoluminException("Rodzaj nie może być pusty");
+        }
+        this.przedziałWiekowy = wiek;
+        this.rodzaj = rodz;
+    }
+
+    @Override
+    @CqlName("beletrystyka_id")
+    public UUID getWoluminId() {
+        return super.getWoluminId();
+    }
+    @Override
+    public void setWoluminId(UUID wId) {
+        super.setWoluminId(wId);
+    }
+
+    public String getPrzedziałWiekowy() {
         return przedziałWiekowy;
+    }
+
+    public void setPrzedziałWiekowy(String w) {
+        this.przedziałWiekowy = w;
     }
 
     public String getRodzaj() {
         return rodzaj;
     }
 
-    public void setPrzedział_wiekowy(String przedział_wiekowy) {
-        if(przedział_wiekowy==null||przedział_wiekowy.isEmpty()){
-            throw new WoluminException("Przedzial wiekowy nie moze byc pusty");
-        }
-        this.przedziałWiekowy = przedział_wiekowy;
-    }
-
-    public void setRodzaj(String rodzaj) {
-        if(rodzaj==null||rodzaj.isEmpty())
-        {
-            throw new WoluminException("Rodzaj nie moze byc pusty");
-        }
-        this.rodzaj = rodzaj;
-    }
-    public String pobierz_informacje() {
-        StringBuilder info =new StringBuilder();
-        info.append("Wydawnictwo: ").append(getWydawnictwo()).append("\n");
-        info.append("Język: ").append(getJezyk()).append("\n");
-        info.append("Tytuł: ").append(getTytul()).append("\n");
-        info.append("Przedział wiekowy: ").append(getPrzedział_wiekowy()).append("\n");
-        info.append("Rodzaj: ").append(getRodzaj()).append("\n");
-        info.append("Autorzy: ");
-        List<String> autorzy = getAutor();
-        for (int i = 0; i < autorzy.size(); i++) {
-            info.append(autorzy.get(i));
-            if (i < autorzy.size() - 1) {
-                info.append(", ");
-            }
-        }
-        info.append("\n");
-        return info.toString();
+    public void setRodzaj(String r) {
+        this.rodzaj = r;
     }
 }
+

@@ -1,8 +1,13 @@
 package org.example.model;
 
 import com.datastax.oss.driver.api.mapper.annotations.CqlName;
+import com.datastax.oss.driver.api.mapper.annotations.DefaultNullSavingStrategy;
 import com.datastax.oss.driver.api.mapper.annotations.Entity;
+import com.datastax.oss.driver.api.mapper.annotations.PartitionKey;
+import com.datastax.oss.driver.api.mapper.entity.saving.NullSavingStrategy;
 import org.example.exceptions.WypozyczenieException;
+
+import java.time.Instant;
 import java.util.Date;
 
 import java.time.Duration;
@@ -10,105 +15,54 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 @Entity
 @CqlName("wypozyczenie")
+
 public class Wypozyczenie {
 
+    @PartitionKey
     private UUID wypozyczenieId;
 
-    private Wypozyczajacy wypozyczajacy;
+    // klucze
+    private UUID wypozyczajacyId;
+    private UUID woluminId;
 
-    private Wolumin wolumin;
+    private Instant dataOd;
+    private Instant dataDo;
 
-    private Date dataOd;
-
-    private Date dataDo;
-
-    //private UUID uuid;
-
-    // Konstruktor z walidacją
-    public Wypozyczenie(Wypozyczajacy wypozyczajacy, Wolumin wolumin) {
-        if (wypozyczajacy == null) {
-            throw new WypozyczenieException("Błędny wypożyczający");
-        }
-        if (wolumin == null) {
-            throw new WypozyczenieException("Błędny wolumin");
-        }
+    public Wypozyczenie() {
         this.wypozyczenieId = UUID.randomUUID();
-        this.wypozyczajacy = wypozyczajacy;
-        this.wolumin = wolumin;
-        this.dataOd = new Date();  // Ustawienie daty początkowej na teraz
-        //this.uuid = UUID.randomUUID();  // Generowanie UUID
+        this.dataOd = Instant.now();
     }
-    public Wypozyczenie() {}
-
-    public UUID getWypozyczenieId() {
-        return wypozyczenieId;
+    public Wypozyczenie(UUID wId, UUID wolId) {
+        this.wypozyczenieId = UUID.randomUUID();
+        this.wypozyczajacyId = wId;
+        this.woluminId = wolId;
+        this.dataOd = Instant.now();
     }
 
-    public void setWypozyczenieId(UUID id) {
-        this.wypozyczenieId = id;
-    }
+    public UUID getWypozyczenieId() { return wypozyczenieId; }
+    public void setWypozyczenieId(UUID id) { this.wypozyczenieId = id; }
 
-    // Gettery
-    public Wypozyczajacy getWypozyczajacy() {
-        return wypozyczajacy;
-    }
+    public UUID getWypozyczajacyId() { return wypozyczajacyId; }
+    public void setWypozyczajacyId(UUID w) { this.wypozyczajacyId = w; }
 
-    public Wolumin getWolumin() {
-        return wolumin;
-    }
+    public UUID getWoluminId() { return woluminId; }
+    public void setWoluminId(UUID x) { this.woluminId = x; }
 
-    public Date getDataOd() {
-        return dataOd;
-    }
+    public Instant getDataOd() { return dataOd; }
+    public void setDataOd(Instant d) { this.dataOd = d; }
 
-    public Date getDataDo() {
-        return dataDo;
-    }
+    public Instant getDataDo() { return dataDo; }
+    public void setDataDo(Instant d) { this.dataDo = d; }
 
-
-    public void setDataOd(Date dataOd) {
-        this.dataOd = dataOd;
-    }
-
-    public void setDataDo(Date dataDo) {
-        this.dataDo = dataDo;
-    }
-
-    /*public UUID getUuid() {
-        return uuid;
-    }*/
-
-    // Settery z walidacją
-    public void setWypozyczajacy(Wypozyczajacy wypozyczajacy) {
-        if (wypozyczajacy == null) {
-            throw new WypozyczenieException("Błędny wypożyczający");
-        }
-        this.wypozyczajacy = wypozyczajacy;
-    }
-
-    public void setWolumin(Wolumin wolumin) {
-        if (wolumin == null) {
-            throw new WypozyczenieException("Błędny wolumin");
-        }
-        this.wolumin = wolumin;
-    }
-
-    // Zakończenie wypożyczenia - ustawienie daty zwrotu
     public void koniecWypozyczenia() {
-        this.dataDo = new Date();
+        this.dataDo = Instant.now();
     }
 
-    // Obliczanie długości wypożyczenia w dniach
     public double dlugoscWypozyczenia() {
-        if (dataDo == null) {
-            return 0;
-        }
-        long diff = dataDo.getTime() - dataOd.getTime();
-        return diff / (1000.0 * 60 * 60 * 24);
+        if (dataDo == null) return 0;
+        long diffInDays = Duration.between(dataOd, dataDo).toDays();
+        return diffInDays;
     }
-
-    // Obliczanie kary na podstawie długości wypożyczenia
-    public double obliczKare() {
-        return wypozyczajacy.getTypWypozyczajacy().getKara() * dlugoscWypozyczenia();
-    }
+    // obliczKare => w menedżerze ściągasz Wypozyczajacy + typ => ...
 }
+

@@ -5,63 +5,46 @@ import com.datastax.oss.driver.api.mapper.annotations.Entity;
 import org.example.exceptions.WoluminException;
 
 import java.util.List;
+import java.util.UUID;
+
 @Entity
 @CqlName("naukowa")
-public class Naukowa extends Ksiazka{
+public class Naukowa extends Ksiazka {
+
     private String recenzja;
     private String dział;
 
-    public Naukowa(String wydawnictwo, String jezyk, String tytul, List<String> autor, String recenzja, String dział) {
-        super(wydawnictwo, jezyk, tytul, autor);
-        if(recenzja==null||recenzja.isEmpty()){
-            throw  new WoluminException("Recenzja nie moze byc pusta");
-        }
-        if(dział==null||dział.isEmpty()){
-            throw new WoluminException("Dzial nie moze byc pusty");
-        }
-        this.recenzja = recenzja;
-        this.dział = dział;
+    public Naukowa() { super(); }
 
+    public Naukowa(String wyd, String jez, String tit, List<String> aut, String rec, String dz) {
+        super(wyd, jez, tit, aut);
+        if (rec == null || rec.isEmpty()) {
+            throw new WoluminException("Recenzja nie może być pusta");
+        }
+        if (dz == null || dz.isEmpty()) {
+            throw new WoluminException("Dział nie może być pusty");
+        }
+        this.recenzja = rec;
+        this.dział = dz;
     }
-    public Naukowa(){}
+
+    @Override
+    @CqlName("naukowa_id")
+    public UUID getWoluminId() {
+        return super.getWoluminId();
+    }
+    @Override
+    public void setWoluminId(UUID wId) {
+        super.setWoluminId(wId);
+    }
 
     public String getRecenzja() {
         return recenzja;
     }
+    public void setRecenzja(String r) { this.recenzja = r; }
 
     public String getDział() {
         return dział;
     }
-
-    public void setRecenzja(String recenzja) {
-        if(recenzja==null||recenzja.isEmpty()){
-            throw new WoluminException("Recenzja nie moze byc pusta");
-        }
-        this.recenzja = recenzja;
-    }
-
-    public void setDział(String dział) {
-        if(dział==null||dział.isEmpty()){
-            throw new WoluminException("Dzial nie moze byc pusty");
-        }
-        this.dział = dział;
-    }
-    public String pobierz_informacje() {
-        StringBuilder info =new StringBuilder();
-        info.append("Wydawnictwo: ").append(getWydawnictwo()).append("\n");
-        info.append("Język: ").append(getJezyk()).append("\n");
-        info.append("Tytuł: ").append(getTytul()).append("\n");
-        info.append("recenzja: ").append(getRecenzja()).append("\n");
-        info.append("dział: ").append(getDział()).append("\n");
-        info.append("Autorzy: ");
-        List<String> autorzy = getAutor();
-        for (int i = 0; i < autorzy.size(); i++) {
-            info.append(autorzy.get(i));
-            if (i < autorzy.size() - 1) {
-                info.append(", ");
-            }
-        }
-        info.append("\n");
-        return info.toString();
-    }
+    public void setDział(String d) { this.dział = d; }
 }

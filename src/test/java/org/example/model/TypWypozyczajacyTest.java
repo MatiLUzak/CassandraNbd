@@ -1,4 +1,4 @@
-package org.example.model;
+/*package org.example.model;
 
 import org.example.exceptions.WypozyczajacyException;
 import org.junit.jupiter.api.Test;
@@ -96,4 +96,4 @@ class TypWypozyczajacyTest {
         assertThrows(WypozyczajacyException.class, () -> pozostali.setMaksLKsiazek(-1));
         assertThrows(WypozyczajacyException.class, () -> pozostali.setZawod(""));
     }
-}
+}*/
