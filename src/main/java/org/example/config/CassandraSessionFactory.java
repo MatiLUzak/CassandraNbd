@@ -26,6 +26,7 @@ public class CassandraSessionFactory {
     public static void closeSession() {
         if (session != null) {
             session.close();
+            session = null;
         }
     }
 }
