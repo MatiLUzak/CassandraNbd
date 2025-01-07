@@ -1,58 +1,80 @@
 package org.example.managers;
 
+import org.example.model.Nauczyciel;
+import org.example.model.Wolumin;
+import org.example.model.Wypozyczajacy;
 import org.example.model.Wypozyczenie;
 import org.junit.jupiter.api.*;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ZarzadcaWypozyczeniaTest {
 
-    private static ZarzadcaWypozyczenia zarzadca;
+    private static ZarzadcaWypozyczenia zarzadcaWypozyczenia;
+    private static ZarzadcaWypozyczajacy zarzadcaWypozyczajacy;
+    private static ZarzadcaWoluminu zarzadcaWoluminu;
 
     @BeforeAll
     static void initAll() {
-        zarzadca = new ZarzadcaWypozyczenia();
+        // Inicjujemy wszystkie zarządców, bo chcemy w testach
+        // najpierw utworzyć Wypozyczajacy i Wolumin
+        zarzadcaWypozyczenia = new ZarzadcaWypozyczenia();
+        zarzadcaWypozyczajacy = new ZarzadcaWypozyczajacy();
+        zarzadcaWoluminu = new ZarzadcaWoluminu();
     }
 
     @AfterAll
     static void closeAll() {
-        zarzadca.close();
+        // zamykamy
+        zarzadcaWypozyczenia.close();
+        zarzadcaWypozyczajacy.close();
+        zarzadcaWoluminu.close();
     }
 
     @Test
     void testCRUD() {
-        // Stworzymy obiekt Wypozyczenie z polami:
-        // 'wypozyczajacy' i 'wolumin' w Twoim modelu to obiekty,
-        // a w cassandrze to raczej powinno być UUID,
-        // ale załóżmy, że mamy minimalny test (może wywalić się jeśli brak adaptera).
+        // 1) Najpierw wstawiamy Wypozyczajacy (używając ZarzadcaWypozyczajacy)
+        Nauczyciel n = new Nauczyciel(0.5, 14, 5, "dr hab.");
+        Wypozyczajacy w = new Wypozyczajacy(null, "Jan Kowalski", Instant.now(), "Adres 123");
+        zarzadcaWypozyczajacy.dodajWypozyczajacyZNauczycielem(w, n);
 
-        Wypozyczenie w = new Wypozyczenie();
-        // w oryginalnym konstruktorze: Wypozyczenie(Wypozyczajacy w, Wolumin wol)
-        // musielibyśmy wypełnić obiekty -> co raczej wymaga 2 zapisań.
-        // By uprościć test "przykładowy", skorzystaj z pustego konstruktora + settery (jeśli wstawiłeś?).
+        Wypozyczajacy foundWyp = zarzadcaWypozyczajacy.znajdzWypozyczajacy(w.getWypozyczajacyId());
+        assertNotNull(foundWyp);
 
-        zarzadca.dodajWypozyczenie(w); // CREATE
+        // 2) Wstawiamy Wolumin
+        Wolumin wol = new Wolumin("WydTest", "PL", "Tytuł wol");
+        zarzadcaWoluminu.dodajWolumin(wol);
 
-        Wypozyczenie found = zarzadca.znajdzWypozyczenie(w.getWypozyczenieId());
-        assertNotNull(found, "Powinno wstawić i odczytać");
-        // Możesz sprawdzić dataOd etc.
+        Wolumin foundWol = zarzadcaWoluminu.znajdzWolumin(wol.getWoluminId());
+        assertNotNull(foundWol);
 
-        // UPDATE
-        Instant nowaData = LocalDateTime.of(2025, 1, 1, 10, 15, 30).toInstant(ZoneOffset.UTC);
+        // 3) Tworzymy Wypozyczenie z kluczami
+        Wypozyczenie wypoz = new Wypozyczenie(
+                foundWyp.getWypozyczajacyId(),
+                foundWol.getWoluminId()
+        );
+        zarzadcaWypozyczenia.dodajWypozyczenie(wypoz);
+
+        // READ
+        Wypozyczenie found = zarzadcaWypozyczenia.znajdzWypozyczenie(wypoz.getWypozyczenieId());
+        assertNotNull(found, "Powinno wstawić i odczytać wypozyczenie");
+        assertEquals(foundWyp.getWypozyczajacyId(), found.getWypozyczajacyId());
+        assertEquals(foundWol.getWoluminId(), found.getWoluminId());
+
+        // UPDATE (zmieniamy dataOd)
+        Instant nowaData = Instant.parse("2025-01-01T12:00:00Z");
         found.setDataOd(nowaData);
-        zarzadca.zaktualizujWypozyczenie(found);
+        zarzadcaWypozyczenia.zaktualizujWypozyczenie(found);
 
-        Wypozyczenie afterUpdate = zarzadca.znajdzWypozyczenie(w.getWypozyczenieId());
+        Wypozyczenie afterUpdate = zarzadcaWypozyczenia.znajdzWypozyczenie(found.getWypozyczenieId());
         assertEquals(nowaData, afterUpdate.getDataOd());
 
         // DELETE
-        zarzadca.usunWypozyczenie(found);
-        Wypozyczenie afterDelete = zarzadca.znajdzWypozyczenie(found.getWypozyczenieId());
-        assertNull(afterDelete);
+        zarzadcaWypozyczenia.usunWypozyczenie(afterUpdate);
+        Wypozyczenie afterDelete = zarzadcaWypozyczenia.znajdzWypozyczenie(afterUpdate.getWypozyczenieId());
+        assertNull(afterDelete, "Powinno być usunięte z bazy");
     }
 }
