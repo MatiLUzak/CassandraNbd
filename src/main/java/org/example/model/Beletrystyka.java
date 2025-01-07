@@ -11,7 +11,7 @@ import java.util.UUID;
 @CqlName("beletrystyka")
 public class Beletrystyka extends Ksiazka {
 
-    private String przedziałWiekowy;
+    private String przedzialWiekowy;
     private String rodzaj;
 
     public Beletrystyka() {
@@ -26,7 +26,7 @@ public class Beletrystyka extends Ksiazka {
         if (rodz == null || rodz.isEmpty()) {
             throw new WoluminException("Rodzaj nie może być pusty");
         }
-        this.przedziałWiekowy = wiek;
+        this.przedzialWiekowy = wiek;
         this.rodzaj = rodz;
     }
 
@@ -40,12 +40,12 @@ public class Beletrystyka extends Ksiazka {
         super.setWoluminId(wId);
     }
 
-    public String getPrzedziałWiekowy() {
-        return przedziałWiekowy;
+    public String getPrzedzialWiekowy() {
+        return przedzialWiekowy;
     }
 
-    public void setPrzedziałWiekowy(String w) {
-        this.przedziałWiekowy = w;
+    public void setPrzedzialWiekowy(String w) {
+        this.przedzialWiekowy = w;
     }
 
     public String getRodzaj() {

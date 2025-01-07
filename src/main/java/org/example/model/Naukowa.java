@@ -12,7 +12,7 @@ import java.util.UUID;
 public class Naukowa extends Ksiazka {
 
     private String recenzja;
-    private String dział;
+    private String dzial;
 
     public Naukowa() { super(); }
 
@@ -25,7 +25,7 @@ public class Naukowa extends Ksiazka {
             throw new WoluminException("Dział nie może być pusty");
         }
         this.recenzja = rec;
-        this.dział = dz;
+        this.dzial = dz;
     }
 
     @Override
@@ -43,8 +43,8 @@ public class Naukowa extends Ksiazka {
     }
     public void setRecenzja(String r) { this.recenzja = r; }
 
-    public String getDział() {
-        return dział;
+    public String getDzial() {
+        return dzial;
     }
-    public void setDział(String d) { this.dział = d; }
+    public void setDział(String d) { this.dzial = d; }
 }
