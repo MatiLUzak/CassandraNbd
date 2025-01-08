@@ -23,23 +23,19 @@ public class ZarzadcaWoluminuTest {
 
     @Test
     void testWoluminCRUD() {
-        // 1) CREATE
         Wolumin w = new Wolumin("PWN", "PL", "Tytuł woluminu");
         zarzadca.dodajWolumin(w);
 
-        // READ
         Wolumin found = zarzadca.znajdzWolumin(w.getWoluminId());
         assertNotNull(found);
         assertEquals("Tytuł woluminu", found.getTytul());
 
-        // UPDATE
         found.setTytul("Zmieniony wolumin");
         zarzadca.zaktualizujWolumin(found);
 
         Wolumin afterUpdate = zarzadca.znajdzWolumin(w.getWoluminId());
         assertEquals("Zmieniony wolumin", afterUpdate.getTytul());
 
-        // DELETE
         zarzadca.usunWolumin(afterUpdate);
         Wolumin afterDelete = zarzadca.znajdzWolumin(w.getWoluminId());
         assertNull(afterDelete);
