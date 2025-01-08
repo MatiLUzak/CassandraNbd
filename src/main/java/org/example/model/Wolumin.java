@@ -17,14 +17,10 @@ public class Wolumin {
     protected String jezyk;
     protected String tytul;
 
-    // ====== PUSTY KONSTRUKTOR, WYMAGANY DLA MAPPER ======
     public Wolumin() {
-        // DataStax wypełni setWoluminId(...) itp. przez settery
     }
 
-    // ====== KONSTRUKTOR Z ARGUMENTAMI (opcjonalnie, do Twojego kodu) ======
     public Wolumin(String wydawnictwo, String jezyk, String tytul) {
-        // Walidacje:
         if (wydawnictwo == null || wydawnictwo.isEmpty()) {
             throw new WoluminException("Błędne Wydawnictwo");
         }

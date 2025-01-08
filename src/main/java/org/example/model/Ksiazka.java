@@ -13,22 +13,18 @@ public class Ksiazka extends Wolumin {
 
     protected List<String> autor;
 
-    // ========== Pusty konstruktor ==========
     public Ksiazka() {
-        super(); // pusty bazowy
+        super();
     }
 
-    // ========== Konstruktor z argumentami ==========
     public Ksiazka(String wydawnictwo, String jezyk, String tytul, List<String> autor) {
         super(wydawnictwo, jezyk, tytul);
-        // walidacja:
         if (autor == null || autor.isEmpty()) {
             throw new WoluminException("Brak autora książki");
         }
         this.autor = autor;
     }
 
-    // Nadpisanie klucza => ksiazka_id
     @Override
     @CqlName("ksiazka_id")
     public UUID getWoluminId() {

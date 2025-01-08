@@ -14,13 +14,9 @@ public class ZarzadcaWypozyczenia {
     private final WypozyczenieDao wypozyczenieDao;
 
     public ZarzadcaWypozyczenia() {
-        // 1) Inicjujemy sesję w fabryce
         CassandraSessionFactory.initSession();
-        // 2) Pobieramy ją
         this.session = CassandraSessionFactory.getSession();
-        // 3) Mapper
         LibraryMapper mapper = new LibraryMapperBuilder(session).build();
-        // 4) DAO
         wypozyczenieDao = mapper.wypozyczenieDao();
     }
 

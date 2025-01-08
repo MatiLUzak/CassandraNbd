@@ -16,7 +16,6 @@ public class Wypozyczajacy {
     @PartitionKey
     private UUID wypozyczajacyId;
 
-    // Zamiast obiektu:
     private UUID typId;
 
     private String nazwa;
@@ -29,11 +28,7 @@ public class Wypozyczajacy {
 
     public Wypozyczajacy(UUID typId, String nazwa, Instant dataUr, String adres) {
         this.wypozyczajacyId = UUID.randomUUID();
-        /*if (typId == null) {
-            throw new WypozyczajacyException("Błędny typWypozyczajacy");
-        }*/
         this.typId = typId;
-        // walidacja nazwy, adresu...
         this.nazwa = nazwa;
         this.dataUr = dataUr;
         this.adres = adres;

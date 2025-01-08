@@ -20,15 +20,11 @@ public class ZarzadcaWoluminu {
     private final CzasopismoDao czasopismoDao;
 
     public ZarzadcaWoluminu() {
-        // 1) inicjujemy
         CassandraSessionFactory.initSession();
-        // 2) pobieramy
         this.session = CassandraSessionFactory.getSession();
 
-        // 3) tworzymy mapper
         LibraryMapper mapper = new LibraryMapperBuilder(session).build();
 
-        // 4) pobieramy DAO
         woluminDao = mapper.woluminDao();
         ksiazkaDao = mapper.ksiazkaDao();
         beletrystykaDao = mapper.beletrystykaDao();
@@ -36,7 +32,6 @@ public class ZarzadcaWoluminu {
         czasopismoDao = mapper.czasopismoDao();
     }
 
-    // ---------- WOLUMIN -----------
     public void dodajWolumin(Wolumin w) {
         woluminDao.save(w);
     }
@@ -50,7 +45,6 @@ public class ZarzadcaWoluminu {
         woluminDao.delete(w);
     }
 
-    // ---------- KSIAZKA -----------
     public void dodajKsiazka(Ksiazka k) {
         ksiazkaDao.save(k);
     }
@@ -64,7 +58,6 @@ public class ZarzadcaWoluminu {
         ksiazkaDao.delete(k);
     }
 
-    // ---------- BELETRYSTYKA -----------
     public void dodajBeletrystyka(Beletrystyka b) {
         beletrystykaDao.save(b);
     }
@@ -78,7 +71,6 @@ public class ZarzadcaWoluminu {
         beletrystykaDao.delete(b);
     }
 
-    // ---------- NAUKOWA -----------
     public void dodajNaukowa(Naukowa n) {
         naukowaDao.save(n);
     }
@@ -92,7 +84,6 @@ public class ZarzadcaWoluminu {
         naukowaDao.delete(n);
     }
 
-    // ---------- CZASOPISMO -----------
     public void dodajCzasopismo(Czasopismo c) {
         czasopismoDao.save(c);
     }

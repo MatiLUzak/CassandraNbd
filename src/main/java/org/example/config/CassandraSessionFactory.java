@@ -1,6 +1,7 @@
 package org.example.config;
 
 import com.datastax.oss.driver.api.core.CqlSession;
+import com.datastax.oss.driver.api.core.config.DriverConfigLoader;
 
 import java.net.InetSocketAddress;
 
@@ -15,6 +16,9 @@ public class CassandraSessionFactory {
                     .withLocalDatacenter("dc1")
                     .withKeyspace("CassandraBaseTask")
                     .withAuthCredentials("cassandra", "cassandrapassword")
+                    .withConfigLoader(
+                            DriverConfigLoader.fromClasspath("application.conf")
+                    )
                     .build();
         }
     }

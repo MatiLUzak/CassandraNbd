@@ -21,7 +21,6 @@ public class Wypozyczenie {
     @PartitionKey
     private UUID wypozyczenieId;
 
-    // klucze
     private UUID wypozyczajacyId;
     private UUID woluminId;
 
@@ -63,6 +62,5 @@ public class Wypozyczenie {
         long diffInDays = Duration.between(dataOd, dataDo).toDays();
         return diffInDays;
     }
-    // obliczKare => w menedżerze ściągasz Wypozyczajacy + typ => ...
 }
 

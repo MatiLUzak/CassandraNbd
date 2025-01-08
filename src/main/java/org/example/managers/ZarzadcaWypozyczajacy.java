@@ -30,7 +30,6 @@ public class ZarzadcaWypozyczajacy {
         pozostaliDao = mapper.pozostaliDao();
     }
 
-    // ================= CREATE =================
     public void dodajWypozyczajacyZTyp(Wypozyczajacy w, TypWypozyczajacy t) {
         typDao.save(t);
         w.setTypId(t.getTypId());
@@ -55,41 +54,30 @@ public class ZarzadcaWypozyczajacy {
         wypozyczajacyDao.save(w);
     }
 
-    // ================= READ =================
     public Wypozyczajacy znajdzWypozyczajacy(UUID id) {
         Wypozyczajacy w = wypozyczajacyDao.findById(id);
         if (w == null) return null;
 
         UUID typId = w.getTypId();
         if (typId != null) {
-            // Spróbuj nauczyciel
             Nauczyciel n = nauczycielDao.findById(typId);
             if (n != null) {
-                // ewentualnie w.setTyp(n);
                 return w;
             }
-            // Spróbuj uczen
             Uczen u = uczenDao.findById(typId);
             if (u != null) {
                 return w;
             }
-            // Spróbuj pozostali
             Pozostali p = pozostaliDao.findById(typId);
             if (p != null) {
                 return w;
             }
-            // Domyślnie bazowy typ
             TypWypozyczajacy t = typDao.findById(typId);
             // w.setTyp(t);
         }
         return w;
     }
 
-    // ================= UPDATE =================
-    /**
-     * Aktualizujemy obiekt Wypozyczajacy, wraz z jego subklasą (jeśli jest).
-     * Wymaga wiedzy, czy w typId jest Nauczyciel, Uczen czy Pozostali.
-     */
     public void zaktualizujWypozyczajacy(Wypozyczajacy w, Object typObiekt) {
         // 1) jeśli subklasa => update w odpowiedniej tabeli
         if (typObiekt instanceof Nauczyciel) {
@@ -101,25 +89,15 @@ public class ZarzadcaWypozyczajacy {
         } else if (typObiekt instanceof TypWypozyczajacy) {
             typDao.update((TypWypozyczajacy) typObiekt);
         }
-        // 2) update samego Wypozyczajacy
         wypozyczajacyDao.update(w);
     }
 
-    // Overload: jeśli nie potrzebujesz subklasy
     public void zaktualizujWypozyczajacy(Wypozyczajacy w) {
-        // tu tylko update Wypozyczajacy, bez subklasy
         wypozyczajacyDao.update(w);
     }
 
-    // ================= DELETE =================
-    /**
-     * Usuwamy Wypozyczajacy oraz (opcjonalnie) subklasę w typie.
-     * Uważaj, czy ten typ nie jest referencjonowany przez innych Wypozyczajacy.
-     */
     public void usunWypozyczajacy(Wypozyczajacy w, Object typObiekt) {
-        // 1) usuwamy Wypozyczajacy
         wypozyczajacyDao.delete(w);
-        // 2) usuwamy subklasę
         if (typObiekt instanceof Nauczyciel) {
             nauczycielDao.delete((Nauczyciel) typObiekt);
         } else if (typObiekt instanceof Uczen) {
@@ -132,7 +110,6 @@ public class ZarzadcaWypozyczajacy {
     }
 
     public void usunWypozyczajacy(Wypozyczajacy w) {
-        // usuwa tylko Wypozyczajacy, nie rusza subklasy
         wypozyczajacyDao.delete(w);
     }
 
