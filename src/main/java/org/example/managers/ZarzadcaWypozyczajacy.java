@@ -79,7 +79,6 @@ public class ZarzadcaWypozyczajacy {
     }
 
     public void zaktualizujWypozyczajacy(Wypozyczajacy w, Object typObiekt) {
-        // 1) jeśli subklasa => update w odpowiedniej tabeli
         if (typObiekt instanceof Nauczyciel) {
             nauczycielDao.update((Nauczyciel) typObiekt);
         } else if (typObiekt instanceof Uczen) {

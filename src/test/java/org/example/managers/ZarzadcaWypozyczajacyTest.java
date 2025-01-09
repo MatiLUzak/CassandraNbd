@@ -56,7 +56,7 @@ public class ZarzadcaWypozyczajacyTest {
         assertNotNull(found.getTypId());
 
         w.setNazwa("Zmieniona Bazowa");
-        t.setKara(0.9); // np. wyższa kara
+        t.setKara(0.9);
         zarzadca.zaktualizujWypozyczajacy(w, t);
 
         Wypozyczajacy afterUpdate = zarzadca.znajdzWypozyczajacy(w.getWypozyczajacyId());
